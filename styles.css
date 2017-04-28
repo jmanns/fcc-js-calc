@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.calculator {
+
+}
+
+button {
+  padding: 10px;
+  font-size: 2rem;
+}
+
+input {
+  padding: 20px;
+}
