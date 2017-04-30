@@ -24,6 +24,12 @@ button:focus {
   margin: auto;
 }
 
+@media (max-width: 480px) {
+  .calculator {
+    width: 100vw;
+  }
+}
+
 .btn:first-of-type {
   font-weight: 600;
 }
@@ -40,6 +46,10 @@ button:focus {
   background-color: #fff;
 }
 
+.btn:active {
+  background-color: #f8f8f8;
+}
+
 .btn-lg {
   width: 50%;
 }
@@ -49,9 +59,17 @@ button:focus {
   background-color: #eee;
 }
 
+.btn.btn-blue:active {
+  background-color: #ddd;
+}
+
 .btn.btn-green {
   color: #fff;
   background-color: #1ecc40;
+}
+
+.btn.btn-green:active {
+  background-color: #18aa35;
 }
 
 .btn.btn-nl-b {
