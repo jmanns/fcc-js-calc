@@ -1,12 +1,12 @@
-var total = ''
-var num = ''
-var operand = undefined
-var expression = ''
-
-;;(function () {
+;(function () {
   const buttons = document.querySelectorAll('button')
   const screen = document.querySelector('.screen.top')
   const screenBottom = document.querySelector('.screen.bottom')
+  
+  var total = ''
+  var num = ''
+  var operand = undefined
+  var expression = ''
 
   buttons.forEach(button => {
     button.addEventListener('click', (e) => {
@@ -14,85 +14,28 @@ var expression = ''
       
       if (isClear(input)) {
         reset()
+        screen.value = ''
       }
     
-      // handle operand
       if (isOperand(input) && total) {
-        if (isOperand(expression.slice(-1))) {
-          expression = expression.slice(0, -1) + input
-        } else {
-          expression = expression + input
-        }
-        if (operand && num) {
-          total = eval(`${total} ${operand} ${num}`)
-          screenBottom.value = total
-          num = ''
-        }
-        operand = input
+        handleOperand(input)
       }
       
-      // handle number
       if (isNumber(input) || isDecimalPoint(input)) {
-        if (!operand) {
-          if (isDecimalPoint(input)) {
-            if (!hasDecimalPoint(total)) {
-              total += input
-              expression = expression + input
-            }
-          } else {
-            if (total === '0') {
-              total = input
-            } else {
-              total = total + input
-            }
-            expression = expression + input
-          }
-            
-        } else {
-          if (isDecimalPoint(input)) {
-            if (!hasDecimalPoint(num)) {
-              num += input
-              expression = expression + input
-            }
-          } else {
-            if (num === '0') {
-              num = input
-            } else {
-              num = num + input
-            }
-            expression = expression + input
-          }
-          screenBottom.value = eval(`${total} ${operand} ${num}`)
-        }
+        handleNumber(input)
       }
-      
-      // handleEquals
-      if (isEquals(input)) {
-        if (total && num) {
-          total = eval(`${total} ${operand} ${num}`)
-          num = ''
-          operand = undefined
-          expression = total + ''
-          screenBottom.value = ''
-        } else {
-          expression = total
-        }
-        
-      }
-      
       
       screen.value=expression
       
-      console.log('TOTAL', total)
-      console.log('NUM', num)
-      console.log('OPERAND', operand)
+      if (isEquals(input)) {
+        handleEquals()
+      }
     })
   })
   
   function isClear (str) {
     return str === 'C'
   }
-
 
   function isNumber (str) {
     return !isNaN(str)
@@ -115,12 +58,74 @@ var expression = ''
     return str.includes('.')
   }
   
+  function handleEquals () {
+    if (total && num) {
+      screen.value = eval(`${total} ${operand} ${num}`)
+    } else {
+      screen.value = total
+    }
+    reset ()
+  }
+  
+  function handleOperand (input) {
+    if (isOperand(expression.slice(-1))) {
+      expression = expression.slice(0, -1) + input
+    } else {
+      expression = expression + input
+    }
+    if (operand && num) {
+      total = eval(`${total} ${operand} ${num}`)
+      screenBottom.value = total
+      num = ''
+    }
+    operand = input
+  }
+  
+  function handleNumber (input) {
+    if (!operand) {
+      // first number being added to equation so set 
+      // it to total
+      if (isDecimalPoint(input)) {
+        // only allow one decimal point to be added
+        // to each number
+        if (!hasDecimalPoint(total)) {
+          total += input
+          expression = expression + input
+        }
+      } else {
+        // maximum of one leading zeros
+        if (total === '0') {
+          total = input
+        } else {
+          total = total + input
+        }
+        expression = expression + input
+      }
+
+    } else {
+      if (isDecimalPoint(input)) {
+        if (!hasDecimalPoint(num)) {
+          num += input
+          expression = expression + input
+        }
+      } else {
+        if (num === '0') {
+          num = input
+        } else {
+          num = num + input
+        }
+        expression = expression + input
+      }
+      screenBottom.value = eval(`${total} ${operand} ${num}`)
+    }
+  }
+  
   function reset () {
     total = ''
     num = ''
     operand = undefined
     expression = ''
-    screen.value = ''
     screenBottom.value = ''
   }
+
 })()
