@@ -10,6 +10,7 @@
 
   buttons.forEach(button => {
     button.addEventListener('click', (e) => {
+      screen.style.color = '#000'
       const input = e.target.dataset.val
       
       if (isClear(input)) {
@@ -64,6 +65,7 @@
     } else {
       screen.value = total
     }
+    screen.style.color = '#18aa35'
     reset ()
   }
   
